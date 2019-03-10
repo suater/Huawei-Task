@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 07.Mar.2019 19:37:44 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="com.project.huaweiproject.Users" table="users" catalog="huawei" optimistic-lock="version">
+        <id name="logicalref" type="int">
+            <column name="logicalref" />
+            <generator class="assigned" />
+        </id>
+        <property name="username" type="string">
+            <column name="username" />
+        </property> 
+        <property name="usercode" type="string">
+            <column name="usercode" />
+        </property> 
+        <property name="state" type="java.lang.Integer">
+            <column name="state" />
+        </property>
+        <property name="createdate" type="timestamp">
+            <column name="createdate" length="19" not-null="true" />
+        </property>
+         <property name="type" type="java.lang.Integer">
+            <column name="type"  />
+        </property>
+    </class>
+</hibernate-mapping>

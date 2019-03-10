@@ -1,0 +1,192 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+
+    <h:head>
+
+
+
+        <title>Task List</title>
+
+
+
+        <h:inputHidden id="keyCode" binding="#{keyCode}" value="#{taskBean.saveAllTask()}" />
+
+
+    </h:head>
+    <!-- header bölümü düzenlenmiştir-->
+    <h:body>
+        <p:layout fullPage="true">
+            <p:layoutUnit position="north" size="100" resizable="true" closable="true" collapsible="true">
+                <h:form>
+                    <p:outputLabel value="Kullanıcı:  #{code}"  />
+
+                </h:form>
+            </p:layoutUnit>
+            <!--header bitti-->
+
+
+            <!-- fouter bölümü dosya kayıt işlemleri gerçekleştirilmiştir-->
+            <p:layoutUnit position="south" size="400" closable="true" collapsible="true">
+                <h:form id="prosses">
+
+                </h:form>
+            </p:layoutUnit>
+
+            <!--fouter bitti-->
+
+
+            <p:layoutUnit position="west" size="250" header="Left" collapsible="true">
+                <h:form id="treeform"> 
+
+
+                </h:form> 
+            </p:layoutUnit>
+
+
+
+            <p:layoutUnit position="center">
+ 
+                <h:form id="dataTable" enctype="multipart/form-data">
+                    <p:commandButton value="Yeni Kayıt" style="margin-right:20px;" icon="fa-database" oncomplete="PF('newTask').show()" onclick="#{taskBean.newTask()}" />
+                    <p:dataTable id="datatable"  var="task" value="#{taskBean.listTasks}" 
+                                 paginator="true" rows="25"
+                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink}
+                                 {PreviousPageLink} {PageLinks} {NextPageLink} 
+                                 {LastPageLink} {RowsPerPageDropdown}" emptyMessage="Bu içerikte kayıt yok" selectionMode="multiple" selection="#{taskBean.listFilter}" rowKey="#{task.logicalref}"
+                                 scrollable="true" lazy="false" widgetVar="filtermodel" filteredValue="#{taskBean.listFilter}" 
+                                 >
+                        <p:ajax event="rowSelect" listener="#{task.logicalref}"  update=":dataTable:datatable" />
+                                  
+                         <f:facet name="header">
+                                      <h:outputText value="Global Source " />
+                                    
+                              <p:inputText id="globalFilter" onkeyup="PF('filtermodel').filter()" style="width:150px" placeholder="Enter">
+                            </p:inputText> 
+                                    </f:facet>
+
+                        <p:column selectionMode="single" headerText="Task" sortBy="#{task.logicalref}" filterBy="#{task.logicalref}" filterMatchMode="contains" >
+                                        <h:outputText value="#{task.logicalref}" />
+                                     
+                                    </p:column>
+
+
+                        <p:column headerText="Task" sortBy="#{task.task}" filterBy="#{task.task}" filterMatchMode="contains" >
+                                        <h:outputText value="#{task.task}" />
+
+                                    </p:column>
+
+                        <p:column headerText="Bitiş Tarihi" filterBy="#{task.dateline}" sortBy="#{task.dateline}" filterMatchMode="contains">
+                                        <h:outputText value="#{task.dateline}" />
+                                    </p:column>
+
+                        <p:column headerText="Durumu" filterBy="#{task.state==0? 'Açık' : 'Kapalı'}" sortBy="#{task.state==0? 'Açık' : 'Kapalı'}" filterMatchMode="contains" >
+                                        <h:outputText value="#{task.state==0? 'Açık' : 'Kapalı'}" />
+                                    </p:column>
+                             
+                             
+
+                         <p:column width="4%">
+                                       <p:commandButton  icon="ui-icon-search" title="View"  oncomplete="PF('updateTask').show()" onclick="#{taskBean.selectTask(task.logicalref)}"   /> 
+                         </p:column>
+
+
+                    </p:dataTable>
+
+
+
+                </h:form>
+
+            </p:layoutUnit>
+            <!--Center Bitt-->
+
+            <p:dialog header="Task Update" id="dialog" widgetVar="updateTask"   >
+                <h:form id="formlist" enctype="multipart/form-data" >
+                    <table>
+                        <br></br>
+                        <h:outputText value="Referansı "  />
+                        <br></br>
+                        <p:inputText value="#{taskBean.selectedTask.logicalref}" disabled="true" />
+                        <br></br>
+                        <h:outputText value="Görev Adı " />
+                        <br></br>
+                        <p:inputText value="#{taskBean.selectedTask.task}"/>
+                        <br></br>
+                        <p:outputLabel for="begdate" value="Başlangıcı "  />
+                        <br></br>
+                        <p:calendar id="begdate" value="#{taskBean.selectedTask.begdate}" showOn="button"  />
+                        <br></br>
+                        <p:outputLabel for="endate" value="Bitişi " />
+                        <br></br>
+                        <p:calendar id="endate" value="#{taskBean.selectedTask.enddate}" showOn="button"  />
+                        <br></br>
+                        <p:outputLabel for="dateline" value="Bitişi " />
+                        <br></br>
+                        <p:calendar id="dateline" value="#{taskBean.selectedTask.dateline}" showOn="button"  />
+                      
+                        <br></br>
+                        <p:outputLabel value="Durum..:" />
+                        <p:selectOneMenu effect="fold" editable="true" value="#{taskBean.selectedTask.state}"  >
+                            <f:selectItem itemLabel="Açık" itemValue="0" />
+                            <f:selectItem itemLabel="Kapalı" itemValue="1" />
+                        </p:selectOneMenu>
+                        <br></br>
+                        <p:outputLabel value="#{taskBean.selectedTask.injecttaskref==0? 'Bağlı değil' : taskBean.selectedTask.injecttaskref }" />
+                        <p:selectOneMenu effect="fold" editable="true" value="#{taskBean.selectedTask.injecttaskref}"   >
+                            <f:selectItems value="#{taskBean.listTasks}" var="obj" itemLabel="#{obj.logicalref}" itemValue="#{taskBean.selectedTask.injecttaskref}" /> 
+                        </p:selectOneMenu>
+
+                        <br></br> 
+                        <p:inputText id="selectUser" value="#{taskBean.selectedUser.username}" disabled="true"  />
+                        <br></br>
+
+                        <p:outputLabel for="newSelect" value="Görevliler..:" />
+                        <p:selectOneMenu id="newSelect"  effect="fold" editable="true" value="#{taskBean.selectedUser.username}"   >
+                            <f:selectItems value="#{taskBean.listUsers}" var="obj" itemLabel="#{obj.username}" itemValue="#{obj}" /> 
+                            <p:ajax event="change" update="selectUser" />
+                        </p:selectOneMenu>
+
+                        <br></br>
+                        <p:commandButton value="Güncelle" style="margin-right:20px;" icon="fa fa-fw fa-edit" disabled="#{taskBean.controlUpState}" action="#{taskBean.updateTask()}" />
+                        <p:commandButton value="Sil     " style="margin-right:20px;" icon="fa fa-fw fa-remove" action="#{taskBean.deleteTask()}" /> 
+                    </table>
+                </h:form>
+            </p:dialog>
+            
+            <p:dialog header="Task New" id="dialogNew" widgetVar="newTask"   >
+                <h:form id="formNew" enctype="multipart/form-data"  >
+                    <table> 
+                        <br></br>
+                        <h:outputText value="Görev Adı " />
+                        <br></br>
+                        <p:inputText value="#{taskBean.task}"/>
+                        <br></br>
+                        <p:outputLabel for="begdateNew" value="Başlangıcı "  />
+                        <br></br>
+                        <p:calendar id="begdateNew" value="#{taskBean.begdate}" showOn="button"  />
+                        <br></br>
+                        <p:outputLabel for="endateNew" value="Bitişi " />
+                        <br></br>
+                        <p:calendar id="endateNew" value="#{taskBean.enddate}" showOn="button"  />
+                        <br></br>
+                        <p:outputLabel for="datelineNew" value="Bitişi " />
+                        <br></br>
+                        <p:calendar id="datelineNew" value="#{taskBean.dateline}" showOn="button"  />
+                      
+                        <p:commandButton value="Yeni" style="margin-right:20px;" icon="fa-database" action="#{taskBean.saveNewTask()}" /> 
+                    </table>
+                </h:form>
+            </p:dialog>
+
+        </p:layout>
+
+    </h:body>
+
+
+</html>
+
