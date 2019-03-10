@@ -1,0 +1,2 @@
+INSERT INTO `task`(`logicalref`, `task`, `begdate`, `enddate`, `dateline`, `createdate`, `userref`, `modifieddate`, `injecttaskref`, `state`) VALUES ('1', 'deneme', '2019-03-08 20:40:38', '2019-03-08 20:40:41', '2019-03-08 20:40:44', '2019-03-08 20:40:47', 1, '2019-03-08 20:40:51', 0, 1);
+INSERT INTO `task`(`logicalref`, `task`, `begdate`, `enddate`, `dateline`, `createdate`, `userref`, `modifieddate`, `injecttaskref`, `state`) VALUES ('2', 'werwerwerdeneme2', '2019-03-10 00:00:00', '2019-03-10 00:00:00', '2019-03-10 00:00:00', '2019-03-10 02:15:51', 1, NULL, 0, 0);

@@ -1,0 +1,1 @@
+INSERT INTO `taskuser`(`username`, `logicalref`, `task`, `begdate`, `enddate`, `dateline`, `createdate`, `userref`, `modifieddate`, `injecttaskref`, `state`) VALUES ('suat', '1', 'deneme', '2019-03-08 20:40:38', '2019-03-08 20:40:41', '2019-03-08 20:40:44', '2019-03-08 20:40:47', 1, '2019-03-08 20:40:51', 0, 1);
